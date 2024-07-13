@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+    <!-- JSX 문법 변환을 위한 babel 사용 -->
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+    <script type="text/babel">
+        function MinuteHourConvert() {
+            const [amount, setAmount] = React.useState();
+            const [flipped, setFlipped] = React.useState(false);
+            // setMinutes 라는 함수에서 입력 event 의 value 값을 가져와 minutes 변수에 할당
+            const changeAmount = (event) => {
+                setAmount(event.target.value);
+            };
+            const reset = () => {
+                setAmount(0);
+            };
+            // flipped을 반전시키는 함수, true → false / false → true
+            const onFlip = () => {
+                // 입력 변경 시 마다 상태 값 초기화
+                reset();
+                setFlipped((current) => !current);
+            };
+            return (
+                <div>
+                    <h3>You want convert times: {amount} </h3>
+                    <div>
+                        <label htmlFor="minites">Minutes</label>
+                        {/* UI에는 useState의 minutes 값을 value로 보여줌  */}
+                        <input
+                            // flipped 가 true 라면 계산된 값을 보여주고, false 라면 amount 를 보여준다
+                            value={flipped ? amount * 60 : amount}
+                            id="minites"
+                            placeholder="Minutes"
+                            type="number"
+                            // input 이벤트가 발생하면 changeMinutes 함수 실행
+                            onChange={changeAmount}
+                            // flipped가 true일 때 disabled 속성이 적용되어 입력을 받을 수 없음
+                            disabled={flipped === true}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="hours">Hours</label>
+                        {/* minutes 상태 값을 60으로 나눠서 시간으로 변환해 보여줌 */}
+                        {/* value는 존재하지만 onChange가 존재하지않음으로 입력은 받을 수 없음 */}
+                        <input
+                            // flipped 가 true 라면 amount 를 보여주고, false 라면 계산된 값을 보여준다
+                            value={flipped ? amount : Math.round(amount / 60)}
+                            id="hours"
+                            placeholder="Hours"
+                            type="number"
+                            onChange={changeAmount}
+                            // flipped가 false일 때 disabled 속성이 적용되어 입력을 받을 수 없음 (default: false)
+                            disabled={flipped === false}
+                        />
+                    </div>
+                    <button onClick={reset}>Reset</button>
+                    <button onClick={onFlip}>
+                        {flipped ? "Minutes to Hours" : "Hours to Minutes"}
+                    </button>
+                </div>
+            );
+        }
+
+        function KmMilesConvert() {
+            const [amount, setAmount] = React.useState();
+            const [flipped, setFlipped] = React.useState(false);
+            // setMinutes 라는 함수에서 입력 event 의 value 값을 가져와 minutes 변수에 할당
+            const changeAmount = (event) => {
+                setAmount(event.target.value);
+            };
+            const reset = () => {
+                setAmount(0);
+            };
+            // flipped을 반전시키는 함수, true → false / false → true
+            const onFlip = () => {
+                // 입력 변경 시 마다 상태 값 초기화
+                reset();
+                setFlipped((current) => !current);
+            };
+            return (
+                <div>
+                    <h3>You want convert metric: {amount} </h3>
+                    <div>
+                        <label htmlFor="km">Kilometers</label>
+                        <input
+                            // flipped 가 true 라면 계산된 값을 보여주고, false 라면 amount 를 보여준다
+                            value={
+                                flipped ? Math.round(amount * 1.60934) : amount
+                            }
+                            id="km"
+                            placeholder="Kilometers"
+                            type="number"
+                            // input 이벤트가 발생하면 changeMinutes 함수 실행
+                            onChange={changeAmount}
+                            // flipped가 true일 때 disabled 속성이 적용되어 입력을 받을 수 없음
+                            disabled={flipped === true}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="miles">Miles</label>
+                        <input
+                            // flipped 가 true 라면 amount 를 보여주고, false 라면 계산된 값을 보여준다
+                            value={
+                                flipped ? amount : Math.round(amount * 0.621371)
+                            }
+                            id="miles"
+                            placeholder="Miles"
+                            type="number"
+                            onChange={changeAmount}
+                            // flipped가 false일 때 disabled 속성이 적용되어 입력을 받을 수 없음 (default: false)
+                            disabled={flipped === false}
+                        />
+                    </div>
+                    <button onClick={reset}>Reset</button>
+                    <button onClick={onFlip}>
+                        {flipped ? "KM to Miles" : "Miles to KM"}
+                    </button>
+                </div>
+            );
+        }
+
+        function App() {
+            const [renderer, setRenderer] = React.useState("time");
+            const onRenderer = () => {
+                setRenderer(event.target.value);
+            };
+
+            return (
+                <div>
+                    <h1>Super Converter</h1>
+                    {/*
+                        renderer 값은 onRenderer 에 따라
+                        event.target.value ===  value="0" 혹은 value="1"
+                        값으로 변경된다
+                    */}
+                    <select value={renderer} onChange={onRenderer}>
+                        <option value="time">MinuteHourConvert</option>
+                        <option value="metric">KmMilesConvert</option>
+                    </select>
+                    {/* JSX 내 HTML 구간에 JS 사용 시 "{}" 사용  */}
+                    {/* renderer 값이 0이라면 MinuteHourConvert 컴포넌트를 렌더링 */}
+                    {/* renderer 값이 1이라면 KmMilesConvert 컴포넌트를 렌더링 */}
+                    {renderer === "time" ? <MinuteHourConvert /> : null}
+                    {renderer === "metric" ? <KmMilesConvert /> : null}
+                </div>
+            );
+        }
+        const root = document.getElementById("root");
+        ReactDOM.render(<App />, root);
+    </script>
+</html>

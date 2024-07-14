@@ -3,13 +3,26 @@ import Button from "./Button";
 import styles from "./App.module.css";
 import { useState, useEffect } from "react";
 
+function Hello() {
+    useEffect(() => {
+        // 컴포넌트가 생성될 때 한 번만 실행, 왜냐하면 두번째 인자가 빈 배열이기 때문
+        console.log("Created Hello component");
+        // return 뒤 Function은 컴포넌트가 사라질 때(Destroy) 실행
+        return () => {
+            console.log("Destroyed Hello component");
+        };
+    }, []);
+    return <h1>Hello World</h1>;
+}
+
 function App() {
     const [count, setCount] = useState(0);
+    const [showing, setShowing] = useState(true);
+    const [keyword, setKeyword] = useState("");
+
     const updateCount = () => {
         setCount((prev) => prev + 1);
     };
-    const [keyword, setKeyword] = useState("");
-    console.log("I run all the time");
     const iRunOnlyOnce = () => {
         console.log("Call API");
     };
@@ -17,6 +30,10 @@ function App() {
     const searchKeyword = (e) => {
         setKeyword(e.target.value);
     };
+    const handleComponent = () => {
+        setShowing(!showing);
+    };
+
     // useEffect 를 사용하여 할당된 함수(console.log)를 한 번만 실행, 두 번째 인자가 빈 배열 일때
     // 두 번째 인자로 값을 넣어주면 해당 값이 변경될 때마다 해당 함수 실행
     useEffect(() => {
@@ -29,6 +46,9 @@ function App() {
         }
     }, [keyword]);
     useEffect(iRunOnlyOnce, []);
+
+    console.log("I run all the time");
+
     return (
         <div>
             <input
@@ -38,6 +58,11 @@ function App() {
             />
             <h1 className={styles.title}>{count}</h1>
             <Button text={"Update count"} cntFunc={updateCount} />
+            <br />
+            <button onClick={handleComponent}>
+                {showing ? "Hide" : "Show"}
+            </button>
+            {showing ? <Hello /> : null}
         </div>
     );
 }

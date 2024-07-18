@@ -32,6 +32,9 @@ function Home() {
                     {movies.map((movie) => (
                         // Movie 컴포넌트에 props로 데이터 전달
                         <Movie
+                            key={movie.id}
+                            // 상세 페이지 URI에 전달할 id 변수의 값
+                            id={movie.id}
                             movieImg={movie.medium_cover_image}
                             movieTitle={movie.title}
                             movieYears={movie.years}

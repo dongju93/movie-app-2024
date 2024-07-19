@@ -12,10 +12,10 @@ function App() {
         // element 가 해당 URI 에 매칭되는 페이지 컴포넌트
         <Router>
             <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/movie-app-2024" element={<Home />} />
                 {/* URI에 변수를 할당하여 동적으로 생성할 수 있음, 상세페이지에 유용 */}
                 {/* ex) movie/1, movie/2, movie/3, ... */}
-                <Route path="/movie/:id" element={<Detail />} />
+                <Route path="/movie-app-2024/movie/:id" element={<Detail />} />
             </Routes>
         </Router>
     );

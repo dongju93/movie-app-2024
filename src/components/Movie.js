@@ -13,17 +13,21 @@ function Movie({
 }) {
     return (
         <div>
-            <Link to={`/movie/${id}`}>
+            <Link to={`/movie-app-2024/movie/${id}`}>
                 <img src={movieImg} alt={movieTitle} />
             </Link>
             <h2>
                 {/*Link는 새로고침 없이, 다른 페이지로 이동을 하게 해줌 */}
                 {/* id 라는 변수 사용을 위해 $ 활용 */}
-                <Link to={`/movie/${id}`}>{movieTitle}</Link>
+                <Link to={`/movie-app-2024/movie/${id}`}>{movieTitle}</Link>
             </h2>
             <h3>{movieYears}</h3>
             <p>Rating : {movieRating}</p>
-            <p>{movieSum}</p>
+            <p>
+                {movieSum.length > 100
+                    ? `${movieSum.slice(0, 100)} ...`
+                    : movieSum}
+            </p>
             <ul>
                 {/* genre 에 대한 key는 index로 지정하여, 자동 증가 값을 고유 값으로 사용함 */}
                 {movieGen.map((genre, index) => (
